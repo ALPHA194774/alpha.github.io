@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Edit User — CraftGhana{% endblock %}
+
+{% block content %}
+<h1>Edit User</h1>
+
+<form method="post">
+    <label>Full Name:</label>
+    <input type="text" name="full_name" value="{{ user.full_name }}" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" value="{{ user.email }}" required>
+
+    <label>Role:</label>
+    <select name="role" required>
+        <option value="customer" {% if user.role == "customer" %}selected{% endif %}>Customer</option>
+        <option value="artisan" {% if user.role == "artisan" %}selected{% endif %}>Artisan</option>
+        <option value="admin" {% if user.role == "admin" %}selected{% endif %}>Admin</option>
+    </select>
+
+    <label>Reset Password (leave blank to keep current):</label>
+    <input type="password" name="password">
+
+    <button type="submit" class="btn btn-blue">Update User</button>
+</form>
+{% endblock %}

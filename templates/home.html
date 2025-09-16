@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Home — CraftGhana{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="text-center mb-5">
+    <h1>🌍 Discover Ghanaian Crafts</h1>
+    <p class="lead">Support local artisans. Browse authentic handmade items.</p>
+    <a href="{{ url_for('browse') }}" class="btn btn-primary btn-lg mt-3">🛍 Start Browsing</a>
+  </div>
+
+  <h2 class="mb-4">✨ Latest Items</h2>
+
+  {% if items %}
+    <div class="row">
+      {% for item in items %}
+        <div class="col-md-3 col-sm-6 mb-4">
+          <div class="card h-100 shadow-sm">
+            {% if item.image_filename %}
+              <img src="{{ url_for('uploads', filename=item.image_filename) }}" 
+                   class="card-img-top" alt="{{ item.title }}"
+                   style="height:200px; object-fit:cover;">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/placeholder.png') }}" 
+                   class="card-img-top" alt="No Image"
+                   style="height:200px; object-fit:cover;">
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ item.title }}</h5>
+              <p class="card-text text-truncate">{{ item.description }}</p>
+              <p class="fw-bold">₵{{ "%.2f"|format(item.price) }}</p>
+              <p class="text-muted"><small>Available: {{ item.quantity }}</small></p>
+              <div class="mt-auto d-grid gap-2">
+                <a href="{{ url_for('item_detail', item_id=item.id) }}" class="btn btn-outline-primary btn-sm">
+                  View Details
+                </a>
+                <a href="{{ url_for('cart_add', item_id=item.id) }}" class="btn btn-success btn-sm">
+                  ➕ Add to Cart
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">No items available right now.</div>
+  {% endif %}
+</div>
+{% endblock %}

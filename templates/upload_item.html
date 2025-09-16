@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Upload Item — CraftGhana{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+  <h2 class="mb-4 text-center">Upload a New Item</h2>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'danger' else 'success' if category == 'success' else 'info' }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <form method="post" enctype="multipart/form-data" class="card shadow-sm p-4">
+    <div class="mb-3">
+      <label for="title" class="form-label">Item Title</label>
+      <input type="text" id="title" name="title" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="price" class="form-label">Price (₵)</label>
+      <input type="number" id="price" name="price" step="0.01" min="0" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <select id="category" name="category" class="form-select" required>
+        <option value="">-- Select a Category --</option>
+        <option value="Textiles">Textiles</option>
+        <option value="Furniture">Furniture</option>
+        <option value="Jewelry">Jewelry</option>
+        <option value="Ceramics">Ceramics</option>
+        <option value="Baskets">Baskets</option>
+        <option value="Leather">Leather</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="quantity" class="form-label">Available Quantity</label>
+      <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control" required>
+    </div>
+
+    <!-- Primary Image -->
+    <div class="mb-3">
+      <label for="image" class="form-label">Primary Image</label>
+      <input type="file" id="image" name="image" class="form-control" accept="image/*">
+    </div>
+
+    <!-- Extra Images -->
+    <div class="mb-3">
+      <label for="images" class="form-label">Extra Images</label>
+      <input type="file" id="images" name="images" class="form-control" accept="image/*" multiple>
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-success">Upload Item</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.title }} — CraftGhana{% endblock %}
+
+{% block content %}
+<div class="item-detail">
+    <div class="item-detail-image">
+        {% if item.image_filename %}
+            <img src="{{ url_for('uploads', filename=item.image_filename) }}" alt="{{ item.title }}">
+        {% else %}
+            <img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="No Image">
+        {% endif %}
+    </div>
+
+    <div class="item-detail-info">
+        <h1>{{ item.title }}</h1>
+        <p>{{ item.description }}</p>
+        <p class="price">₵{{ "%.2f"|format(item.price) }}</p>
+        <p><strong>Available:</strong> {{ item.quantity }}</p>
+
+        {% if item.artisan %}
+            <p><strong>Artisan:</strong> {{ item.artisan.full_name }}</p>
+        {% endif %}
+
+        <div class="actions">
+            <a href="{{ url_for('cart_add', item_id=item.id) }}" class="btn btn-green">Add to Cart</a>
+            <a href="{{ url_for('browse') }}" class="btn">Back to Browse</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
