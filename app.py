@@ -2,6 +2,8 @@
 import os
 from datetime import datetime
 from dotenv import load_dotenv
+import logging
+logging.basicConfig(level=logging.INFO)
 
 # load .env (safe place for secrets)
 load_dotenv()
@@ -22,6 +24,8 @@ from sqlalchemy import or_, MetaData, func
 
 # Optional: Flask-Mail; import but configured from env
 from flask_mail import Mail, Message
+app = Flask(__name__, static_folder='static', template_folder='templates', instance_relative_config=True)
+
 
 # ---------- Setup ----------
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -29,7 +33,18 @@ UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(os.path.join(BASE_DIR, "instance"), exist_ok=True)
 
-app = Flask(__name__, instance_relative_config=True)
+
+# Inject current year/time into all templates
+@app.context_processor
+def inject_now():
+    return {'now': datetime.utcnow()}
+
+@app.route("/test-static")
+def test_static():
+    import os
+    full_path = os.path.join(app.static_folder, "images", "about-hero.jpg")
+    return f"Exists: {os.path.exists(full_path)}<br>Path: {full_path}"
+
 
 # ---------- Order status helpers (top-level) ----------
 ORDER_STATUSES = ["pending", "processing", "shipped", "delivered", "cancelled"]
@@ -62,15 +77,16 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-# Mail config: read from env only
-app.config.update({
-    "MAIL_SERVER": os.environ.get("MAIL_SERVER", "smtp.gmail.com"),
-    "MAIL_PORT": int(os.environ.get("MAIL_PORT", 587) or 587),
-    "MAIL_USE_TLS": os.environ.get("MAIL_USE_TLS", "True").lower() in ("1", "true", "yes"),
-    "MAIL_USERNAME": os.environ.get("MAIL_USERNAME"),
-    "MAIL_PASSWORD": os.environ.get("MAIL_PASSWORD"),
-    "MAIL_DEFAULT_SENDER": os.environ.get("MAIL_FROM", "noreply@craftghana.local"),
-})
+# ----- Temporary Hardcoded Mail Config for SSL Test -----
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USE_TLS"] = False
+app.config["MAIL_USE_SSL"] = True
+app.config["MAIL_USERNAME"] = "manueleugen09@gmail.com"
+app.config["MAIL_PASSWORD"] = "oirkpruwmwcjecam"  # your Gmail App Password
+app.config["MAIL_DEFAULT_SENDER"] = "manueleugen09@gmail.com"
+# --------------------------------------------------------
+
 
 mail = Mail(app)  # safe to call even if not configured
 
@@ -519,6 +535,11 @@ def browse():
     items = query.order_by(Item.created_at.desc()).all()
     cats = [c[0] for c in db.session.query(Item.category).distinct().all()]
     return render_template("browse.html", items=items, categories=cats, q=q, selected_category=category)
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 
 @app.route("/item/<int:item_id>")
 def item_detail(item_id):
