@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Home — CraftGhana{% endblock %}
+
+<body class="home-page">
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section d-flex align-items-center text-center text-white">
+  <div class="overlay"></div>
+  <div class="container">
+    <h1 class="display-3 fw-bold">🌍 Discover Authentic Ghanaian Crafts</h1>
+    <p class="lead mt-3">Celebrate culture, empower artisans, and shop unique handmade creations.</p>
+    <a href="{{ url_for('browse') }}" class="btn btn-warning btn-lg mt-3">🛍 Start Browsing</a>
+  </div>
+</section>
+
+<!-- Featured Carousel (Two-row Amazon-style) -->
+<section class="featured-carousel py-5">
+  <div class="container">
+    <h2 class="mb-4 text-center">🔥 Featured Products</h2>
+    <div class="carousel-wrapper">
+      <div class="carousel-track">
+        {% set featured_items = [
+          {'title':'Ceramic Vase','img':'https://images.unsplash.com/photo-1588159343748-03836c701d5f?auto=format&fit=crop&w=600&q=80'},
+          {'title':'Gold Necklace','img':'https://images.unsplash.com/photo-1602524816027-8c3e4f3a12f4?auto=format&fit=crop&w=600&q=80'},
+          {'title':'Handmade Textiles','img':'https://images.unsplash.com/photo-1625646114780-abcdfb0dd064?auto=format&fit=crop&w=600&q=80'},
+          {'title':'Wooden Sculpture','img':'https://images.unsplash.com/photo-1616627988058-c9ec8e7fdf12?auto=format&fit=crop&w=600&q=80'},
+          {'title':'Leather Bag','img':'https://images.unsplash.com/photo-1600180758895-3c2e1d60b3b2?auto=format&fit=crop&w=600&q=80'},
+          {'title':'Beaded Bracelet','img':'https://images.unsplash.com/photo-1616628877667-98b4c0c61d7b?auto=format&fit=crop&w=600&q=80'},
+          {'title':'Handmade Basket','img':'https://images.unsplash.com/photo-1616628777667-111c0c61d7b?auto=format&fit=crop&w=600&q=80'},
+          {'title':'Wood Carving','img':'https://images.unsplash.com/photo-1616628888777-abc4c0c61d7b?auto=format&fit=crop&w=600&q=80'}
+        ] %}
+
+        {% for item in featured_items %}
+        <div class="carousel-item card">
+          <img src="{{ item.img }}" alt="{{ item.title }}">
+          <h5>{{ item.title }}</h5>
+        </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-btn prev">&#10094;</button>
+      <button class="carousel-btn next">&#10095;</button>
+    </div>
+  </div>
+</section>
+
+<!-- Latest Items Grid -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="mb-4 text-center">🆕 Latest Items</h2>
+    {% if items %}
+      <div class="items-grid">
+        {% for item in items %}
+        <div class="card item-card">
+          {% if item.image_filename %}
+          <img src="{{ url_for('uploads', filename=item.image_filename) }}" alt="{{ item.title }}">
+          {% else %}
+          <img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="No Image">
+          {% endif %}
+          <h3>{{ item.title }}</h3>
+          <p class="text-truncate">{{ item.description }}</p>
+          <p class="fw-bold">₵{{ "%.2f"|format(item.price) }}</p>
+          <p class="text-muted"><small>Available: {{ item.quantity }}</small></p>
+          <div class="mt-auto d-grid gap-2">
+            <a href="{{ url_for('item_detail', item_id=item.id) }}" class="btn btn-outline-primary btn-sm">View</a>
+            <a href="{{ url_for('cart_add', item_id=item.id) }}" class="btn btn-success btn-sm">➕ Add</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info text-center">No items available right now.</div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Carousel JS -->
+<script>
+const track = document.querySelector('.featured-carousel .carousel-track');
+const prevBtn = document.querySelector('.carousel-btn.prev');
+const nextBtn = document.querySelector('.carousel-btn.next');
+let scrollAmount = 0;
+const gap = 20;
+const itemWidth = 200 + gap; // item width + gap
+
+nextBtn.addEventListener('click', () => {
+  scrollAmount += itemWidth * 3; // scroll 3 items at a time
+  if(scrollAmount > track.scrollWidth - track.clientWidth) scrollAmount = 0;
+  track.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+});
+
+prevBtn.addEventListener('click', () => {
+  scrollAmount -= itemWidth * 3;
+  if(scrollAmount < 0) scrollAmount = track.scrollWidth - track.clientWidth;
+  track.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+});
+
+// Optional: Auto-scroll every 5s
+let autoScroll = setInterval(() => {
+  nextBtn.click();
+}, 5000);
+
+// Pause on hover
+track.addEventListener('mouseenter', () => clearInterval(autoScroll));
+track.addEventListener('mouseleave', () => autoScroll = setInterval(() => nextBtn.click(), 5000));
+</script>
+
+{% endblock %}

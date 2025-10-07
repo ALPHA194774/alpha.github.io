@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Edit Item — CraftGhana{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+  <h2 class="mb-4 text-center">Edit Item</h2>
+
+  <form method="post" enctype="multipart/form-data" class="card shadow-sm p-4">
+    <div class="mb-3">
+      <label class="form-label">Title</label>
+      <input type="text" name="title" class="form-control" value="{{ item.title }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea name="description" class="form-control" rows="4" required>{{ item.description }}</textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Price (₵)</label>
+      <input type="number" step="0.01" name="price" class="form-control" value="{{ item.price }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Quantity</label>
+      <input type="number" name="quantity" class="form-control" value="{{ item.quantity }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Category</label>
+      <input type="text" name="category" class="form-control" value="{{ item.category }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Current Image</label><br>
+      {% if item.image_filename %}
+        <img src="{{ url_for('uploads', filename=item.image_filename) }}" 
+             alt="{{ item.title }}" 
+             class="img-thumbnail mb-2" style="width:150px; height:auto;">
+      {% else %}
+        <p class="text-muted">No image uploaded.</p>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Change Image (optional)</label>
+      <input type="file" name="image" class="form-control">
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary">Update Item</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
