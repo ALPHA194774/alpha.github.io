@@ -1,0 +1,594 @@
+/* ==========================================
+   CRAFTGHANA — CLEAN HOMEPAGE CSS
+   ========================================== */
+
+/* ========== GLOBAL RESET ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* ========== LIGHT & DARK MODE VARIABLES ========== */
+:root {
+  --bg-color: #f8f9fa;
+  --text-color: #333;
+  --accent-color: #0044cc;
+  --card-bg: #fff;
+  --border-color: #ddd;
+  --footer-bg: #eee;
+}
+
+body.dark-mode {
+  --bg-color: #121212;
+  --text-color: #eaeaea;
+  --accent-color: #2962ff;
+  --card-bg: rgba(30, 30, 30, 0.9);
+  --border-color: #333;
+  --footer-bg: #1f1f1f;
+}
+
+h1, h2, h3 {
+  color: var(--accent-color);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+/* ========== HEADER / NAVBAR ========== */
+header {
+  background: var(--accent-color);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  z-index: 1030;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+header img { height: 50px; }
+
+header nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+header nav a {
+  color: white;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+header nav a:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.theme-toggle {
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  margin-left: 10px;
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle:hover { transform: scale(1.2); }
+
+body.dark-mode header { background: #1e1e1e; }
+
+/* ========== FOOTER ========== */
+footer {
+  background: var(--footer-bg);
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #555;
+  margin-top: 40px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode footer { color: #aaa; }
+
+/* ========== PAGE BACKGROUNDS ========== */
+body.login-page,
+body.register-page,
+body.home-page,
+body.about-page,
+body.browse-page,
+body.cart-page {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+  color: #fff;
+}
+
+/* Specific page images */
+body.login-page { background-image: url("/static/images/login-bg.jpg"); }
+body.register-page { background-image: url("/static/images/register-bg.jpg"); }
+body.home-page { background-image: url("/static/images/home-bg.jpg"); }
+body.about-page { background-image: url("/static/images/about-bg.jpg"); }
+body.browse-page { background-image: url("/static/images/browse-bg.jpg"); }
+body.cart-page { background-image: url("/static/images/cart-bg.jpg"); }
+
+/* Overlay for readability */
+body.login-page::before,
+body.register-page::before,
+body.home-page::before,
+body.about-page::before,
+body.browse-page::before,
+body.cart-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: -1;
+}
+
+body.dark-mode.login-page::before,
+body.dark-mode.register-page::before,
+body.dark-mode.home-page::before,
+body.dark-mode.about-page::before,
+body.dark-mode.browse-page::before,
+body.dark-mode.cart-page::before {
+  background: rgba(0,0,0,0.65);
+}
+
+/* ========== HERO SECTIONS ========== */
+.hero-section,
+.about-hero,
+.browse-hero {
+  position: relative;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  z-index: 1;
+}
+
+.hero-section .container,
+.about-hero .content,
+.browse-hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-section .overlay,
+.about-hero .overlay,
+.browse-hero .overlay {
+  background: rgba(0,0,0,0) !important;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Hero text animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.about-hero .content { animation: fadeIn 1.5s ease-in-out; }
+
+/* ========== CARDS & ITEMS ========== */
+.card, .item-card {
+  max-width: 220px;
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  text-align: center;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card img, .item-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px 8px 0 0;
+}
+
+.item-card h3, .card-title {
+  margin: 10px 0 5px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent-color);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+}
+
+/* Items Grid */
+.items-grid, .featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* ========== FORMS ========== */
+form {
+  background: var(--card-bg);
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  max-width: 480px;
+  margin: 30px auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  color: var(--text-color);
+}
+
+form input, form select, form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+  color: #000;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+form input:focus, form select:focus, form textarea:focus {
+  border-color: var(--accent-color);
+  outline: none;
+}
+
+form button {
+  background: var(--accent-color);
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+form button:hover { background: #0033aa; }
+
+body.dark-mode form input,
+body.dark-mode form select,
+body.dark-mode form textarea { background: rgba(255,255,255,0.1); border-color: #555; color: #fff; }
+
+/* ========== NAVBAR & FOOTER TRANSPARENCY ========== */
+.navbar-transparent {
+  background: rgba(0,0,0,0.3) !important;
+  backdrop-filter: blur(10px);
+  position: absolute;
+  width: 100%;
+  z-index: 1030;
+  transition: background 0.3s ease-in-out;
+}
+
+.navbar-transparent .nav-link, .navbar-transparent .navbar-brand { color: #fff !important; }
+.navbar-transparent .nav-link:hover { color: #ffc107 !important; }
+
+.footer-transparent {
+  background: rgba(0,0,0,0.3) !important;
+  backdrop-filter: blur(10px);
+  color: #fff !important;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.footer-transparent a { color: #ffc107 !important; transition: color 0.2s ease-in-out; }
+.footer-transparent a:hover { color: #fff !important; }
+
+.navbar-transparent, .footer-transparent { animation: fadeIn 0.7s ease forwards; }
+
+/* ==========================
+   FEATURED CAROUSEL
+   ========================== */
+.featured-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-carousel .carousel-wrapper { overflow: hidden; position: relative; }
+
+.featured-carousel .carousel-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
+  gap: 20px;
+  animation: scroll-carousel 20s linear infinite;
+}
+
+.featured-carousel .carousel-item {
+  max-width: 220px;
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  text-align: center;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.featured-carousel .carousel-item img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px 8px 0 0;
+}
+
+.featured-carousel .carousel-item h5 {
+  margin: 10px 0;
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.featured-carousel .carousel-item:hover { transform: scale(1.05); }
+
+.featured-carousel .carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 2;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+.featured-carousel .carousel-btn:hover { background: rgba(0,0,0,0.8); }
+
+.featured-carousel .carousel-btn.prev { left: 10px; }
+.featured-carousel .carousel-btn.next { right: 10px; }
+
+@keyframes scroll-carousel {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ==========================
+   RESPONSIVE
+   ========================== */
+@media (max-width: 992px) {
+  .item-card, .card, .featured-carousel .carousel-item { max-width: 180px; }
+  .item-card img, .card img, .featured-carousel .carousel-item img { height: 140px; }
+  .featured-carousel .carousel-track { animation-duration: 30s; }
+}
+
+@media (max-width: 768px) {
+  .item-card, .card, .featured-carousel .carousel-item { max-width: 160px; }
+  .item-card img, .card img, .featured-carousel .carousel-item img { height: 120px; }
+  .featured-carousel .carousel-track { animation-duration: 40s; }
+}
+
+@media (max-width: 576px) {
+  .item-card, .card, .featured-carousel .carousel-item { max-width: 140px; }
+  .item-card img, .card img, .featured-carousel .carousel-item img { height: 100px; }
+  .featured-carousel .carousel-track { grid-template-rows: 1fr; animation-duration: 50s; }
+}
+
+/* ==========================
+   Transparent Cards on Homepage
+   ========================== */
+body.home-page .card,
+body.home-page .item-card {
+  background: rgba(255, 255, 255, 0);  /* fully transparent */
+  color: #fff;                          /* text color */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6); /* stronger shadow for contrast */
+  border: none;                          /* remove borders */
+  position: relative;                    /* for overlay */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.home-page .card img,
+body.home-page .item-card img {
+  border-radius: 8px;                     /* keep rounded corners */
+  object-fit: cover;
+}
+
+/* Optional overlay gradient behind text for readability */
+body.home-page .card::before,
+body.home-page .item-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0));
+  border-radius: 8px;
+  z-index: 1;
+}
+
+/* Make text appear above overlay */
+body.home-page .card * ,
+body.home-page .item-card * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Headings color and shadow */
+body.home-page .item-card h3,
+body.home-page .card-title,
+body.home-page .carousel-item h5 {
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hover effect */
+body.home-page .card:hover,
+body.home-page .item-card:hover,
+body.home-page .carousel-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.8);
+}
+
+/* Optional: Pause carousel on hover */
+.featured-carousel .carousel-wrapper:hover .carousel-track { animation-play-state: paused; }
+body.home-page {
+  background-image: url("/static/images/home-bg.jpg");
+  background-size: cover;         /* makes the image cover the entire page */
+  background-position: center;    /* centers the image */
+  background-repeat: no-repeat;   /* prevents tiling */
+  background-attachment: fixed;   /* keeps image fixed while scrolling */
+}
+/* Make homepage sections transparent */
+body.home-page section {
+  background: transparent !important;  /* section background */
+  position: relative;
+  z-index: 1;
+  padding: 40px 0;
+}
+
+/* Make Bootstrap containers transparent */
+body.home-page .container {
+  background: transparent !important;
+  padding: 0;  /* optional: remove extra padding if needed */
+}
+
+/* Make cards partially transparent */
+body.home-page .card,
+body.home-page .item-card {
+  background: rgba(255, 255, 255, 0.2); /* semi-transparent white */
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+/* ==========================================
+   ARTISAN DASHBOARD PAGE STYLING
+   ========================================== */
+body.artisan-dashboard-page {
+  background-image: url("/static/images/dashboard-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #fff;
+  position: relative;
+}
+
+body.artisan-dashboard-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: -1;
+}
+
+body.artisan-dashboard-page main {
+  background: transparent !important;
+}
+
+body.artisan-dashboard-page .card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.artisan-dashboard-page .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+}
+
+body.artisan-dashboard-page .btn {
+  color: #fff;
+  background: #28a745;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 18px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+body.artisan-dashboard-page .btn:hover {
+  background: #218838;
+}
+
+/* ==========================================
+   UPLOAD ITEM PAGE STYLING
+   ========================================== */
+body.upload-page {
+  background-image: url("/static/images/upload-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #fff;
+  position: relative;
+}
+
+body.upload-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+body.upload-page main {
+  background: transparent !important;
+}
+
+/* Upload form container */
+.upload-section {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 15px;
+}
+
+body.upload-page form {
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  border-radius: 18px;
+  max-width: 800px;
+  width: 100%;
+  padding: 40px;
+}
+
+body.upload-page form input,
+body.upload-page form select,
+body.upload-page form textarea {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+body.upload-page form button {
+  background: #28a745;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 20px;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+body.upload-page form button:hover {
+  background: #218838;
+  transform: scale(1.05);
+}
+
