@@ -2,6 +2,7 @@
 {% block title %}My Orders — CraftGhana{% endblock %}
 
 {% block content %}
+<div class="container mt-4">
 <h1>My Orders</h1>
 
 {% if orders %}
@@ -46,4 +47,5 @@
 {% else %}
   <p>No orders yet. <a href="{{ url_for('browse') }}">Start shopping</a>.</p>
 {% endif %}
+</div>
 {% endblock %}

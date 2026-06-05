@@ -2,6 +2,7 @@
 {% block title %}Admin — CraftGhana{% endblock %}
 
 {% block content %}
+<div class="container mt-4">
 <h1>Admin Dashboard</h1>
 <p>Welcome, {{ current_user.full_name }}! Here you can manage users, items, and orders.</p>
 
@@ -122,5 +123,6 @@
     {% else %}
         <p>No orders yet.</p>
     {% endif %}
+</div>
 </div>
 {% endblock %}

@@ -55,7 +55,7 @@
           {% if item.image_filename %}
           <img src="{{ url_for('uploads', filename=item.image_filename) }}" alt="{{ item.title }}">
           {% else %}
-          <img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="No Image">
+          <img src="https://placehold.co/300x200/e2e8f0/64748b?text=No+Image" alt="No Image">
           {% endif %}
           <h3>{{ item.title }}</h3>
           <p class="text-truncate">{{ item.description }}</p>

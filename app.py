@@ -592,13 +592,38 @@ def checkout():
         flash("Cart is empty", "warning")
         return redirect(url_for("browse"))
 
+    # Validate items and clean stale entries
     total = 0.0
     items_to_save = []
+    stale_ids = []
+    stock_warnings = []
+
     for item_id, qty in cart.items():
         item = Item.query.get(int(item_id))
-        if item:
+        if not item:
+            stale_ids.append(item_id)
+            continue
+        # Cap qty to available stock
+        available = item.quantity
+        if qty > available:
+            stock_warnings.append(f"{item.title}: requested {qty}, available {available} — using {available}")
+            qty = available
+        if qty > 0:
             total += item.price * qty
             items_to_save.append((item, qty))
+
+    # Clean stale entries from session cart
+    for sid in stale_ids:
+        cart.pop(sid, None)
+    save_cart(cart)
+
+    if not items_to_save:
+        flash("No valid items in cart — they may have been removed from the shop.", "warning")
+        return redirect(url_for("browse"))
+
+    if stock_warnings:
+        for w in stock_warnings:
+            flash(w, "warning")
 
     order = Order(buyer_id=current_user.id, total=round(total, 2))
     db.session.add(order)
@@ -606,7 +631,7 @@ def checkout():
 
     for item, qty in items_to_save:
         db.session.add(OrderItem(order_id=order.id, item_id=item.id, title=item.title, price=item.price, qty=qty))
-        item.quantity = max(0, item.quantity - qty)
+        item.quantity -= qty
 
     db.session.commit()
 
