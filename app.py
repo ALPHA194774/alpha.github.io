@@ -185,6 +185,23 @@ def save_cart(cart):
     session["cart"] = cart
     session.modified = True
 
+def send_email(subject, recipients, body):
+    """Best-effort email send. Returns True if sent."""
+    if not app.config.get("MAIL_USERNAME") or not app.config.get("MAIL_PASSWORD"):
+        return False
+    try:
+        msg = Message(
+            subject,
+            sender=app.config.get("MAIL_DEFAULT_SENDER"),
+            recipients=[recipients] if isinstance(recipients, str) else recipients
+        )
+        msg.body = body
+        mail.send(msg)
+        return True
+    except Exception as e:
+        app.logger.exception(f"Failed to send: {subject}")
+        return False
+
 # ---------- Routes ----------
 @app.route("/")
 def home():
@@ -244,6 +261,13 @@ def register():
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
+        send_email(
+            "Welcome to CraftGhana!",
+            email,
+            f"Hi {name},\n\nWelcome to CraftGhana! Your account has been created as a {role}.\n\n"
+            f"Browse handmade Ghanaian crafts: {url_for('browse', _external=True)}\n\n"
+            f"Regards,\nThe CraftGhana Team"
+        )
         flash("Account created. Please login.", "success")
         return redirect(url_for("login"))
     return render_template("auth_register.html")
@@ -256,6 +280,14 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
             login_user(user)
+            send_email(
+                "New sign-in to CraftGhana",
+                email,
+                f"Hi {user.full_name},\n\nYou just signed in to your CraftGhana account.\n\n"
+                f"If this was you, no action needed. If you don't recognize this activity, "
+                f"please reset your password immediately.\n\n"
+                f"Regards,\nThe CraftGhana Team"
+            )
             flash("Welcome back!", "success")
             if user.role == "artisan":
                 return redirect(url_for("artisan_dashboard"))
