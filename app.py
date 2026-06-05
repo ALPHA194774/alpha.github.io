@@ -71,9 +71,19 @@ def inject_order_helpers():
 # Basic config (use env vars where possible)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-change-me")
 
-# Force absolute path for SQLite DB to avoid "unable to open database file"
-db_path = os.path.abspath(os.path.join(BASE_DIR, "instance", "craftghana.db"))
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
+# ----- Database: PostgreSQL in production (Render), SQLite locally -----
+DATABASE_URL = os.environ.get("DATABASE_URL")
+if DATABASE_URL:
+    # Render provides DATABASE_URL automatically for PostgreSQL
+    # Fix for Render: URL might start with postgres:// instead of postgresql://
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+else:
+    # Local fallback: SQLite
+    db_path = os.path.abspath(os.path.join(BASE_DIR, "instance", "craftghana.db"))
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
@@ -881,11 +891,22 @@ def confirm_delivery(order_id):
     flash("Thank you for confirming delivery!", "success")
     return redirect(url_for("my_orders"))
 
-# ---------- Run ----------
-if __name__ == "__main__":
+# ---------- Auto-run migrations on startup (required for gunicorn/Render) ----------
+def run_migrations():
+    """Create tables or apply pending migrations."""
     with app.app_context():
-        # create tables if they don't exist
-        db.create_all()
-        # NOTE: do NOT auto-seed admin in production. If you want demo data locally, uncomment next line (dev only):
-        # seed_demo_data()
+        from flask_migrate import upgrade as migrate_upgrade
+        try:
+            migrate_upgrade()
+            app.logger.info("Database migrations applied successfully")
+        except Exception as e:
+            app.logger.warning(f"Migration failed, falling back to db.create_all(): {e}")
+            db.create_all()
+
+
+# Run migrations immediately when imported by gunicorn
+run_migrations()
+
+# ---------- Run (local dev) ----------
+if __name__ == "__main__":
     app.run(debug=True)
