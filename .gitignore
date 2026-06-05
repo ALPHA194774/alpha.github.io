@@ -1,0 +1,17 @@
+# Environment variables
+.env
+
+# Instance folder (SQLite DB, uploaded files)
+instance/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
