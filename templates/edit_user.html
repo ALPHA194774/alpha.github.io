@@ -2,25 +2,33 @@
 {% block title %}Edit User — CraftGhana{% endblock %}
 
 {% block content %}
-<h1>Edit User</h1>
+<div class="container py-4" style="max-width:560px;">
+  <h1 class="mb-4" style="font-family:'Playfair Display',serif;">Edit User</h1>
 
-<form method="post">
-    <label>Full Name:</label>
-    <input type="text" name="full_name" value="{{ user.full_name }}" required>
-
-    <label>Email:</label>
-    <input type="email" name="email" value="{{ user.email }}" required>
-
-    <label>Role:</label>
-    <select name="role" required>
+  <form method="post" class="card shadow-sm border-0 rounded-3 p-4">
+    <div class="mb-3">
+      <label class="form-label fw-medium">Full Name</label>
+      <input type="text" name="full_name" class="form-control" value="{{ user.full_name }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-medium">Email</label>
+      <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-medium">Role</label>
+      <select name="role" class="form-select" required>
         <option value="customer" {% if user.role == "customer" %}selected{% endif %}>Customer</option>
         <option value="artisan" {% if user.role == "artisan" %}selected{% endif %}>Artisan</option>
         <option value="admin" {% if user.role == "admin" %}selected{% endif %}>Admin</option>
-    </select>
-
-    <label>Reset Password (leave blank to keep current):</label>
-    <input type="password" name="password">
-
-    <button type="submit" class="btn btn-blue">Update User</button>
-</form>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="form-label fw-medium">Reset Password <small class="text-muted">(leave blank to keep current)</small></label>
+      <input type="password" name="password" class="form-control">
+    </div>
+    <div class="d-grid">
+      <button type="submit" class="btn btn-custom btn-lg">Update User</button>
+    </div>
+  </form>
+</div>
 {% endblock %}

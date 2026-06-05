@@ -3,49 +3,51 @@
 
 {% block content %}
 <div class="container mt-4">
-<h1>My Orders</h1>
+  <h1 style="font-family:'Playfair Display',serif;">My Orders</h1>
 
-{% if orders %}
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>Total (₵)</th>
-        <th>Status</th>
-        <th>Placed</th>
-        <th>Items</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for order in orders %}
-        <tr>
-          <td>#{{ order.id }}</td>
-          <td>₵{{ "%.2f"|format(order.total) }}</td>
-          <td><span class="badge bg-{{ status_badge(order.status) }}">{{ order.status|capitalize }}</span></td>
-          <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
-          <td>
-            <ul class="mb-0">
-              {% for oi in order.order_items %}
-                <li>{{ oi.qty }} × {{ oi.title }} (₵{{ "%.2f"|format(oi.price) }})</li>
-              {% endfor %}
-            </ul>
-          </td>
-          <td>
-            {% if order.status == 'shipped' %}
-              <form method="post" action="{{ url_for('confirm_delivery', order_id=order.id) }}" style="display:inline;">
-                <button type="submit" class="btn btn-success btn-sm">Confirm Delivery</button>
-              </form>
-            {% else %}
-              <span class="text-muted">No action</span>
-            {% endif %}
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-{% else %}
-  <p>No orders yet. <a href="{{ url_for('browse') }}">Start shopping</a>.</p>
-{% endif %}
+  {% if orders %}
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Placed</th>
+            <th>Items</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            <tr>
+              <td>#{{ order.id }}</td>
+              <td class="fw-bold">₵{{ "%.2f"|format(order.total) }}</td>
+              <td><span class="badge bg-{{ status_badge(order.status) }}">{{ order.status|capitalize }}</span></td>
+              <td><small>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</small></td>
+              <td>
+                <ul class="mb-0">
+                  {% for oi in order.order_items %}
+                    <li>{{ oi.qty }}x {{ oi.title }} (₵{{ "%.2f"|format(oi.price) }})</li>
+                  {% endfor %}
+                </ul>
+              </td>
+              <td>
+                {% if order.status == 'shipped' %}
+                  <form method="post" action="{{ url_for('confirm_delivery', order_id=order.id) }}" class="d-inline">
+                    <button type="submit" class="btn btn-success btn-sm rounded-pill">Confirm Delivery</button>
+                  </form>
+                {% else %}
+                  <span class="text-muted small">—</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>No orders yet. <a href="{{ url_for('browse') }}" class="text-decoration-none fw-bold">Start shopping</a>.</p>
+  {% endif %}
 </div>
 {% endblock %}

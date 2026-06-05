@@ -2,21 +2,10 @@
 {% block title %}About — CraftGhana{% endblock %}
 
 {% block hero %}
-<!-- Hero Section (moved outside content for proper layering) -->
-<section class="hero-section" 
-         style="background-image: url('{{ url_for('static', filename='images/about-hero.jpg') }}');
-                background-size: cover;
-                background-position: center;
-                position: relative;
-                min-height: 60vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;">
-  <div class="overlay"></div>
-  <div class="container text-center position-relative">
-    <h1 class="display-4 fw-bold">🎯 Our Mission</h1>
-    <p class="lead mt-3 mb-0">
+<section class="hero-section" style="background:linear-gradient(135deg,#2D5016,#4A8C2A,#C85A48);min-height:50vh;display:flex;align-items:center;justify-content:center;">
+  <div class="container text-center text-white">
+    <h1 class="display-4 fw-bold" style="font-family:'Playfair Display',serif;">Our Mission</h1>
+    <p class="lead mt-3 mb-0 mx-auto" style="max-width:700px;">
       Empowering Ghanaian artisans with a global platform to showcase their unique crafts and cultural heritage.
     </p>
   </div>
@@ -24,56 +13,46 @@
 {% endblock %}
 
 {% block content %}
-<!-- About Story Section -->
-<section class="section-wrapper py-5">
+<section class="py-5">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-md-6 mb-4 mb-md-0">
-        <img src="https://images.unsplash.com/photo-1613470206939-d7eaa8b03e80?auto=format&fit=crop&w=800&q=80" 
-             alt="Ghanaian Artisans" class="img-fluid rounded shadow">
+    <div class="row align-items-center g-4">
+      <div class="col-md-6">
+        <img src="https://images.unsplash.com/photo-1613470206939-d7eaa8b03e80?auto=format&fit=crop&w=800&q=80" alt="Ghanaian Artisans" class="img-fluid rounded-3 shadow">
       </div>
       <div class="col-md-6">
-        <h2 class="mb-3">🌍 Our Story</h2>
-        <p>
-          <strong>CraftGhana</strong> was founded with a simple goal — to connect local artisans to the world.
-          We believe in preserving Ghana's rich craftsmanship traditions while promoting economic independence 
-          and creativity. From handwoven textiles to intricate beadwork and wood carvings, every piece tells a story.
-        </p>
-        <p>
-          Our platform bridges the gap between artisans and buyers worldwide, offering transparency, fair trade, 
-          and sustainability through digital innovation.
-        </p>
+        <h2 class="mb-3" style="font-family:'Playfair Display',serif;">Our Story</h2>
+        <p><strong>CraftGhana</strong> was founded with a simple goal — to connect local artisans to the world. We believe in preserving Ghana's rich craftsmanship traditions while promoting economic independence and creativity. From handwoven textiles to intricate beadwork and wood carvings, every piece tells a story.</p>
+        <p>Our platform bridges the gap between artisans and buyers worldwide, offering transparency, fair trade, and sustainability through digital innovation.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Core Values -->
-<section class="section-wrapper bg-light py-5">
+<section class="py-5" style="background:#f8f5f0;">
   <div class="container text-center">
-    <h2 class="mb-5">💛 Our Core Values</h2>
-    <div class="row">
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0 h-100">
+    <h2 class="mb-5" style="font-family:'Playfair Display',serif;">Our Core Values</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card shadow-sm border-0 h-100 rounded-3">
           <div class="card-body">
-            <h5 class="card-title text-warning">✨ Authenticity</h5>
-            <p class="card-text">Every craft is a genuine reflection of Ghanaian art, made with love and tradition.</p>
+            <h5 class="card-title" style="color:#F5A623;">Authenticity</h5>
+            <p class="card-text text-muted">Every craft is a genuine reflection of Ghanaian art, made with love and tradition.</p>
           </div>
         </div>
       </div>
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0 h-100">
+      <div class="col-md-4">
+        <div class="card shadow-sm border-0 h-100 rounded-3">
           <div class="card-body">
-            <h5 class="card-title text-warning">🌿 Sustainability</h5>
-            <p class="card-text">We encourage eco-friendly and locally sourced materials for every handmade creation.</p>
+            <h5 class="card-title" style="color:#2D5016;">Sustainability</h5>
+            <p class="card-text text-muted">We encourage eco-friendly and locally sourced materials for every handmade creation.</p>
           </div>
         </div>
       </div>
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0 h-100">
+      <div class="col-md-4">
+        <div class="card shadow-sm border-0 h-100 rounded-3">
           <div class="card-body">
-            <h5 class="card-title text-warning">🤝 Empowerment</h5>
-            <p class="card-text">We support artisans — especially women — with fair trade and global exposure.</p>
+            <h5 class="card-title" style="color:#C85A48;">Empowerment</h5>
+            <p class="card-text text-muted">We support artisans — especially women — with fair trade and global exposure.</p>
           </div>
         </div>
       </div>
@@ -81,12 +60,11 @@
   </div>
 </section>
 
-<!-- Call to Action -->
-<section class="section-wrapper text-center py-5">
+<section class="py-5 text-center">
   <div class="container">
-    <h2>🛍 Join the Movement</h2>
-    <p class="lead mb-4">Be part of a thriving artisan community that celebrates Ghanaian culture and craftsmanship.</p>
-    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg rounded-pill">Become an Artisan</a>
+    <h2 class="mb-3" style="font-family:'Playfair Display',serif;">Join the Movement</h2>
+    <p class="lead mb-4 text-muted">Be part of a thriving artisan community that celebrates Ghanaian culture and craftsmanship.</p>
+    <a href="{{ url_for('register') }}" class="btn btn-custom btn-lg rounded-pill px-5">Become an Artisan</a>
   </div>
 </section>
 {% endblock %}

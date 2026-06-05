@@ -3,74 +3,72 @@
 
 {% block content %}
 <div class="container mt-4">
-  <h1 class="mb-4 text-center">📊 Analytics Dashboard</h1>
+  <h1 class="mb-4" style="font-family:'Playfair Display',serif;">Analytics Dashboard</h1>
 
   <!-- Total Sales -->
   <div class="row mb-4">
     <div class="col-md-6 offset-md-3">
-      <div class="card text-center shadow-sm">
+      <div class="card text-center shadow-sm border-0 rounded-3">
         <div class="card-body">
-          <h5 class="card-title">Total Sales</h5>
-          <h2 class="text-success">₵{{ "%.2f"|format(total_sales) }}</h2>
+          <h5 class="card-title text-muted">Total Sales</h5>
+          <h2 class="fw-bold" style="color:#2D5016;">₵{{ "%.2f"|format(total_sales) }}</h2>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Top 5 Artisans -->
-  <div class="card shadow-sm">
-    <div class="card-header bg-dark text-white">
-      <h5 class="mb-0">🏆 Top 5 Artisans by Revenue</h5>
+  <div class="card shadow-sm border-0 rounded-3 mb-5">
+    <div class="card-header text-white" style="background:#2D5016;">
+      <h5 class="mb-0">Top 5 Artisans by Revenue</h5>
     </div>
     <div class="card-body p-0">
-      <table class="table table-striped mb-0">
-        <thead>
-          <tr>
-            <th>Artisan</th>
-            <th class="text-end">Revenue (₵)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for name, revenue in top_artisans %}
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
             <tr>
-              <td>{{ name }}</td>
-              <td class="text-end">₵{{ "%.2f"|format(revenue) }}</td>
+              <th>Artisan</th>
+              <th class="text-end">Revenue (₵)</th>
             </tr>
-          {% else %}
-            <tr>
-              <td colspan="2" class="text-center text-muted">No sales data yet</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {% for name, revenue in top_artisans %}
+              <tr>
+                <td>{{ name }}</td>
+                <td class="text-end fw-bold">₵{{ "%.2f"|format(revenue) }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="2" class="text-center text-muted">No sales data yet</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sales Per Day Chart -->
+  <div class="card shadow-sm border-0 rounded-3">
+    <div class="card-header text-white" style="background:#C85A48;">
+      <h5 class="mb-0">Daily Sales Trend</h5>
+    </div>
+    <div class="card-body">
+      <canvas id="salesChart" height="100"></canvas>
     </div>
   </div>
 </div>
-{% endblock %}
 
-<!-- Sales Per Day Chart -->
-<div class="card mt-5 shadow-sm">
-  <div class="card-header bg-primary text-white">
-    <h5 class="mb-0">📈 Daily Sales Trend</h5>
-  </div>
-  <div class="card-body">
-    <canvas id="salesChart" height="100"></canvas>
-  </div>
-</div>
-
-<!-- Chart.js Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 const ctx = document.getElementById('salesChart').getContext('2d');
-const salesChart = new Chart(ctx, {
+new Chart(ctx, {
     type: 'line',
     data: {
         labels: {{ labels|tojson }},
         datasets: [{
             label: 'Sales per Day',
             data: {{ values|tojson }},
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: '#4A8C2A',
+            backgroundColor: 'rgba(74, 140, 42, 0.15)',
             fill: true,
             tension: 0.3
         }]
@@ -78,16 +76,11 @@ const salesChart = new Chart(ctx, {
     options: {
         scales: {
             x: { title: { display: true, text: 'Date' }},
-            y: { title: { display: true, text: 'Total Sales (₵)' }}
+            y: { title: { display: true, text: 'Sales (₵)' }}
         },
-        plugins: {
-            legend: { display: true },
-            tooltip: { mode: 'index', intersect: false }
-        },
+        plugins: { legend: { display: true }, tooltip: { mode: 'index', intersect: false } },
         responsive: true
     }
 });
 </script>
-{% if current_user.role == 'admin' %}
-  <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_analytics') }}">Analytics</a></li>
-{% endif %}
+{% endblock %}
