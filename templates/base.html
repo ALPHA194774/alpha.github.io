@@ -34,11 +34,12 @@
              {% elif request.endpoint == 'home' %}home-page
              {% elif request.endpoint == 'artisan_dashboard' %}artisan-dashboard-page
              {% else %}default-page{% endif %}">
+<script>(function(){var t=localStorage.getItem("theme");if(t==="dark")document.body.classList.add("dark-mode");})();</script>
 
   <!-- 🌍 Navbar -->
   <nav id="mainNav"
     class="navbar navbar-expand-lg sticky-top 
-    {% if request.endpoint in ['login', 'register'] %}navbar-transparent{% else %}navbar-dark{% endif %}">
+    {% if request.endpoint in ['login', 'register'] %}navbar-transparent navbar-dark{% endif %}">
     <div class="container">
       <a class="navbar-brand fw-bold text-warning" href="{{ url_for('home') }}">CraftGhana</a>
 

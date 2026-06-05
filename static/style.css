@@ -114,7 +114,7 @@ a:hover { color: var(--primary-dark); }
 }
 
 body.dark-mode .navbar.scrolled {
-  background: rgba(18, 18, 24, 0.95) !important;
+  background: var(--card-bg) !important;
 }
 
 .navbar-brand {
@@ -124,17 +124,44 @@ body.dark-mode .navbar.scrolled {
   letter-spacing: -0.5px;
 }
 
-.navbar-dark .navbar-nav .nav-link {
-  color: rgba(255, 255, 255, 0.85);
+/* ===== THEME-AWARE NAVBAR COLORS ===== */
+
+/* Default navbar (no navbar-dark class): use CSS vars that adapt */
+.navbar-nav .nav-link {
   font-weight: 500;
   padding: 0.5rem 1rem;
   border-radius: var(--radius-sm);
+  color: var(--text);
   transition: var(--transition);
 }
+.navbar-nav .nav-link:hover {
+  color: var(--primary);
+  background: rgba(0, 0, 0, 0.05);
+}
 
-.navbar-dark .navbar-nav .nav-link:hover {
+body.dark-mode .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.82);
+}
+body.dark-mode .navbar-nav .nav-link:hover {
   color: var(--secondary);
   background: rgba(255, 255, 255, 0.1);
+}
+
+/* Transparent navbar (auth pages) always needs light text */
+.navbar-transparent.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+.navbar-transparent.navbar-dark .navbar-nav .nav-link:hover {
+  color: var(--secondary) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Toggler icon matches theme */
+body.dark-mode .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3csvg%3e") !important;
+}
+body.dark-mode .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .navbar .btn-warning {
@@ -609,6 +636,16 @@ body.artisan-dashboard-page .card {
 #themeToggle:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: scale(1.1);
+}
+
+/* Light mode default navbar: dark border so button visible on light bg */
+body:not(.dark-mode):not(.login-page):not(.register-page) #themeToggle {
+  border-color: rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.05);
+}
+body:not(.dark-mode):not(.login-page):not(.register-page) #themeToggle:hover {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 /* ========== Featured Carousel ========== */
